@@ -1,9 +1,23 @@
 //Navbar Component
 var Navbar = React.createClass({
-    render: function () {
+    propTypes: {
+        brand: React.PropTypes.string
+    },
+    getDefaultProps: function(){
+        return{
+            brand: 'SimpleReact',
+            color: 'light'
+        }
+    },
+    render: function(){
+        if(this.props.color == 'dark'){
+            var navClass = 'navbar navbar-inverse'
+        }else if(this.props.color == 'light'){
+            var navClass = 'navbar navbar-default'
+        }
         return (
             <div>
-                <nav className="navbar navbar-default">
+                <nav className={navClass}>
                     <div className="container-fluid">
                         <div className="navbar-header">
                             <button type="button" className="navbar-toggle collapsed" data-toggle="collapse"
@@ -13,7 +27,7 @@ var Navbar = React.createClass({
                                 <span className="icon-bar"></span>
                                 <span className="icon-bar"></span>
                             </button>
-                            <a className="navbar-brand" href="#">SimpleReact</a>
+                            <a className="navbar-brand" href="#">{this.props.brand}</a>
                         </div>
                         <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul className="nav navbar-nav">
@@ -31,16 +45,26 @@ var Navbar = React.createClass({
 
 //Jumbotron Component
 var Jumbotron = React.createClass({
-    render: function () {
+    propTypes: {
+        heading: React.PropTypes.string,
+        text: React.PropTypes.string,
+        link: React.PropTypes.string
+    },
+    getDefaultProps: function(){
+        return{
+            heading: 'Welcome!',
+            text: 'Welcome to SimpleReact website buit with React Components',
+            link: 'http://google.ca'
+        }
+    },
+    render: function(){
         return (
             <div>
                 <div className="jumbotron">
                     <div className="container">
-                        <h1>Hello, world!</h1>
-                        <p>This is a template for a simple marketing or informational website. It includes a large callout called a
-                            jumbotron and three supporting pieces of content. Use it as a starting point to create something more
-                            unique.</p>
-                        <p><a className="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
+                        <h1>Hello, {this.props.heading}</h1>
+                        <p>{this.props.text}</p>
+                        <p><a className="btn btn-primary btn-lg" href={this.props.link} target="_blank" role="button">Google</a></p>
                     </div>
                 </div>
             </div>
@@ -50,7 +74,7 @@ var Jumbotron = React.createClass({
 
 //Home Page Component
 var PageHome = React.createClass({
-    render: function () {
+    render: function(){
         return (
             <div className="container">
                 <div className="row">
@@ -63,12 +87,18 @@ var PageHome = React.createClass({
 
 //Footer Component
 var Footer = React.createClass({
-    render: function () {
+    getDefaultProps: function(){
+        return {
+            year: 2016,
+            note: 'SampleReact Application.'
+        }
+    },
+    render: function(){
         return (
             <div className="container">
                 <hr/>
                 <footer>
-                    <p>&copy; 2015 Company, Inc.</p>
+                    <p>Copyright &copy; {this.props.year}, {this.props.note}</p>
                 </footer>
             </div>
         )
@@ -77,10 +107,10 @@ var Footer = React.createClass({
 
 //Main App Component
 var App = React.createClass({
-    render: function () {
+    render: function(){
         return (
             <div>
-                <Navbar />
+                <Navbar brand="SimpleReact" color="dark"/>
                 <Jumbotron />
                 <PageHome />
                 <Footer />
