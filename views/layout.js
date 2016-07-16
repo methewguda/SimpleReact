@@ -11,10 +11,20 @@ var Navbar = React.createClass({
     },
     render: function(){
         if(this.props.color == 'dark'){
-            var navClass = 'navbar navbar-inverse'
+            var navClass = 'navbar navbar-inverse';
         }else if(this.props.color == 'light'){
-            var navClass = 'navbar navbar-default'
+            var navClass = 'navbar navbar-default';
         }
+
+        var homeActive = '';
+        var aboutActive = '';
+
+        if(this.props.page == 'home'){
+            homeActive = 'active';
+        }else if(this.props.page == 'about'){
+            aboutActive = 'active';
+        }
+
         return (
             <div>
                 <nav className={navClass}>
@@ -31,9 +41,8 @@ var Navbar = React.createClass({
                         </div>
                         <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul className="nav navbar-nav">
-                                <li className="active"><a href="#">Home <span className="sr-only">(current)</span></a>
-                                </li>
-                                <li><a href="#">About</a></li>
+                                <li className={homeActive}><a onClick={this.props.homeClick} href="#">Home </a></li>
+                                <li className={aboutActive}><a onClick={this.props.aboutClick} href="#">About</a></li>
                             </ul>
                         </div>
                     </div>
@@ -85,6 +94,20 @@ var PageHome = React.createClass({
     }
 });
 
+//About Page Component
+var PageAbout = React.createClass({
+    render: function(){
+        return (
+            <div className="container">
+                <div className="row">
+                    <h2 className="page-header">About Page</h2>
+                    <p>Some Contents.......................</p>
+                </div>
+            </div>
+        )
+    }
+});
+
 //Footer Component
 var Footer = React.createClass({
     getDefaultProps: function(){
@@ -107,12 +130,37 @@ var Footer = React.createClass({
 
 //Main App Component
 var App = React.createClass({
+    getInitialState: function(){
+        return{
+            page: 'home'
+        }
+    },
+    handleHomeClick: function(){
+        this.setState({
+            page: 'home'
+        })
+    },
+    handleAboutClick: function(){
+        this.setState({
+            page: 'about'
+        })
+    },
     render: function(){
+        if(this.state.page == 'home'){
+            var jumbotron = <Jumbotron/>;
+            var page = <PageHome/>;
+        }else if(this.state.page == 'about'){
+            var jumbotron = '';
+            var page = <PageHome/>;
+        }
         return (
             <div>
-                <Navbar brand="SimpleReact" color="dark"/>
-                <Jumbotron />
-                <PageHome />
+                <Navbar brand="SimpleReact" color="dark"
+                        page={this.state.page}
+                        homeClick={this.handleHomeClick}
+                        aboutClick={this.handleAboutClick}/>
+                {Jumbotron}
+                {page}
                 <Footer />
             </div>
         )
